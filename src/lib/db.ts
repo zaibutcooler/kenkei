@@ -18,7 +18,7 @@ export async function fetcher(command: string, ...args: (number | string)[]) {
     cache: "no-store",
   });
 
-  if (response.ok) {
+  if (!response.ok) {
     throw new Error(`Redis error: ${response.statusText}`);
   }
 
