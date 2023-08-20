@@ -44,7 +44,7 @@ const HomeLayout = ({ children }: { children: ReactNode }) => {
           <ProfileBlock />
         </div>
       </section>
-      <section className="px-3 md:px-6">{children}</section>
+      <section className="px-3 md:px-6 w-full">{children}</section>
     </div>
   );
 };
