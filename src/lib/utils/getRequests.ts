@@ -1,13 +1,10 @@
 import { fetcher } from "../db";
 import { RequestType } from "../types/types";
 
-interface Request {
-  id: string;
-  email: string;
-}
-
 const getRequests = async (userID: string) => {
   try {
+    console.log("reached");
+
     const requestIDs = await fetcher(
       "sismember",
       `user:${userID}:incoming_requests`

@@ -5,17 +5,16 @@ import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
     const { email } = await req.json();
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
     const idToAdd = (await fetcher("get", `user:email:${email}`)) as string;
 
     if (!idToAdd) {
       return new Response("Invalid Email!", { status: 400 });
-    }
-
-    const session = await getServerSession(authOptions);
-
-    if (!session) {
-      return new Response("Unauthorized", { status: 401 });
     }
 
     if (idToAdd === session.user.id) {
