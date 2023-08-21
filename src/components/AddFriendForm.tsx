@@ -3,11 +3,28 @@
 import { useState } from "react";
 
 const AddFriendForm = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string>("");
   const [success, setSuccess] = useState(false);
-  const [errors, setErrors] = useState({ status: "", message: "" });
+  const [errors, setErrors] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {};
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const response = await fetch("/api/friends/add", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+        setEmail("");
+      } else {
+        setErrors("An Error Occured!");
+      }
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
 
   return (
     <div>
@@ -31,10 +48,16 @@ const AddFriendForm = () => {
             Add
           </button>
         </div>
-        <p className="mt-1 text-sm text-red-600">{errors.message}</p>
-        {success ? (
-          <p className="mt-1 text-sm text-green-600">Friend request sent!</p>
-        ) : null}
+
+        <div>
+          {success && (
+            <p className="mt-1 text-sm text-green-600 p-2">
+              Friend request sent!
+            </p>
+          )}
+        </div>
+
+        {errors && <p className="mt-1 text-sm text-red-600 p-2">{errors}</p>}
       </form>
     </div>
   );
