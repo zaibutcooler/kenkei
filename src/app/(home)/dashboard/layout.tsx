@@ -1,4 +1,8 @@
 import ProfileBlock from "@/components/ProfileBlock";
+import { fetcher } from "@/lib/db";
+import getFriends from "@/lib/utils/getFriends";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import React, { ReactNode } from "react";
 import { BiUserPlus, BiUser } from "react-icons/bi";
@@ -6,7 +10,14 @@ import { FaUserPlus } from "react-icons/fa";
 
 const friendRequests = ["Kakashi Sensei", "Gojo Satoru", "Doraemon", "Python"];
 
-const HomeLayout = ({ children }: { children: ReactNode }) => {
+const HomeLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await getServerSession();
+  if (!session) redirect("/login");
+
+  const friends = await getFriends(session.user.id);
+
+  console.log("friends", friends);
+
   return (
     <div className="flex h-screen">
       <section className="hidden md:flex h-full w-full max-w-[300px] grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">

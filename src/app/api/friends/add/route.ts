@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       return new Response("Already added this user", { status: 400 });
     }
 
-    const isAlreadyFriend = await fetcher(
+    const isAlreadyFriends = await fetcher(
       "sismember",
       `user:${idToAdd}:friends`,
       session.user.id
