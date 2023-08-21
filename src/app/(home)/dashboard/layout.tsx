@@ -7,16 +7,17 @@ import Link from "next/link";
 import React, { ReactNode } from "react";
 import { BiUserPlus, BiUser } from "react-icons/bi";
 import { FaUserPlus } from "react-icons/fa";
+import { authOptions } from "@/lib/auth";
 
 const friendRequests = ["Kakashi Sensei", "Gojo Satoru", "Doraemon", "Python"];
 
 const HomeLayout = async ({ children }: { children: ReactNode }) => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
 
-  const friends = await getFriends(session.user.id);
+  // const friends = await getFriends(session.user.id);
 
-  console.log("friends", friends);
+  // console.log("friends", friends);
 
   return (
     <div className="flex h-screen">
@@ -36,7 +37,7 @@ const HomeLayout = async ({ children }: { children: ReactNode }) => {
               <span className="">Add Friends</span>
             </Link>
             <Link
-              href="/dashboard/add"
+              href="/dashboard/requests"
               className="py-2 rounded-md group hover:bg-green-50 hover:text-green-500 px-4 flex items-center gap-4">
               <BiUser className="text-2xl p-[3px] border rounded-md group-hover:border-green-200" />
               <span className="">Friend Requests</span>
