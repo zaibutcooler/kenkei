@@ -1,9 +1,9 @@
-import { Redis } from "@upstash/redis";
+import { User } from "../types/db";
 
 const url = process.env.UPSTASH_REDIS_REST_URL;
 const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-export async function fetcher(command: string, ...args: (number | string)[]) {
+async function fetchUser(command: string, ...args: (number | string)[]) {
   const commandUrl = `${url}/${command}/${args.join("/")}`;
 
   const response = await fetch(commandUrl, {
@@ -21,7 +21,15 @@ export async function fetcher(command: string, ...args: (number | string)[]) {
   return data.result;
 }
 
-export const db = new Redis({
-  url: url as string,
-  token: token as string,
-});
+const getUser = async (id: string) => {
+  try {
+    const response = await fetchUser("get", `user:${id}`);
+    const result = JSON.parse(response) as User;
+    console.log("rs", result);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default getUser;

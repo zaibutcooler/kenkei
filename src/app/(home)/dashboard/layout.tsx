@@ -8,6 +8,7 @@ import React, { ReactNode } from "react";
 import { BiUserPlus, BiUser } from "react-icons/bi";
 import { FaUserPlus } from "react-icons/fa";
 import { authOptions } from "@/lib/auth";
+import DisplayFriends from "@/components/DisplayFriends";
 
 const friendRequests = ["Kakashi Sensei", "Gojo Satoru", "Doraemon", "Python"];
 
@@ -15,9 +16,9 @@ const HomeLayout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
 
-  // const friends = await getFriends(session.user.id);
+  const friends = await getFriends(session.user.id);
 
-  // console.log("friends", friends);
+  console.log("friends", friends);
 
   return (
     <div className="flex h-screen">
@@ -26,7 +27,7 @@ const HomeLayout = async ({ children }: { children: ReactNode }) => {
 
         <div className="flex-grow font-medium text-sm">
           <section className="mb-4">
-            <p className="text-gray-400 font-medium text-xs mb-1">Chats</p>
+            <DisplayFriends friends={friends} />
           </section>
           <section className="mb-4">
             <p className="text-gray-400 font-medium text-xs mb-1">Friends</p>

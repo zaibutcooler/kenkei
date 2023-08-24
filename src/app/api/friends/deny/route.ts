@@ -13,32 +13,35 @@ export async function POST(req: Request) {
 
     const isAlreadyFriends = await fetcher(
       "sismember",
-      `user:${session.user.id}:friends`
+      `user:${session.user.id}:friends`,
+      id
     );
 
     if (isAlreadyFriends) {
       return new Response("Already friends", { status: 400 });
     }
 
-    const friendRequest = await fetcher(
+    const hasFriendRequest = await fetcher(
       "sismember",
       `user:${session.user.id}:incoming_request`,
       id
     );
 
-    if (!friendRequest) {
+    if (!hasFriendRequest) {
       return new Response("No friend request", { status: 400 });
     }
 
-    const [rawUser, rawFriend] = (await Promise.all([
-      fetcher("get", `user:${session.user.id}`),
-      fetcher("get", `user:${id}`),
-    ])) as [string, string];
+    // const [rawUser, rawFriend] = (await Promise.all([
+    //   fetcher("get", `user:${session.user.id}`),
+    //   fetcher("get", `user:${id}`),
+    // ])) as [string, string];
 
-    const user = JSON.parse(rawUser) as User;
-    const friend = JSON.parse(rawFriend) as User;
+    // const user = JSON.parse(rawUser) as User;
+    // const friend = JSON.parse(rawFriend) as User;
 
     //notify and final step
+
+    await db.srem(`user:${session.user.id}:incoming_request`, id);
 
     return new Response("okay", { status: 201 });
   } catch (err) {
