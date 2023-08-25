@@ -16,6 +16,7 @@ const MessageInput: React.FC<Props> = ({ chatID }) => {
     e.preventDefault();
 
     try {
+      if (inputText === "") return null;
       const postBody = { chatID, text: inputText };
 
       const response = await fetch("/api/chat/send", {

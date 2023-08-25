@@ -17,6 +17,7 @@
     "@upstash/redis": "^1.22.0",
     "autoprefixer": "10.4.14",
     "lucide-react": "^0.268.0",
+    "nanoid": "^4.0.2",
     "next": "13.4.13",
     "next-auth": "^4.23.0",
     "postcss": "8.4.27",

@@ -47,7 +47,7 @@ const Messages: React.FC<MessagesProps> = ({ messages }) => {
         <Message
           key={index}
           text={message.text}
-          isSentByMe={message.senderId === session?.user.id}
+          isSentByMe={message.senderID === session?.user.id}
         />
       ))}
     </div>

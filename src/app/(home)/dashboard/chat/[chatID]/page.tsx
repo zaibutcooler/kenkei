@@ -19,6 +19,7 @@ const ChatPage: React.FC<ChatPageProps> = async ({ params }) => {
   if (!session) return redirect("/login");
 
   const { chatID } = params;
+
   const [idOne, idTwo] = chatID?.split("--") || [];
   console.log("bb", chatID);
 

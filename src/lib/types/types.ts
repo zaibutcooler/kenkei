@@ -5,8 +5,8 @@ export interface RequestType {
 
 export interface Message {
   id: string;
-  senderId: string;
-  receiverId: string;
+  senderID: string;
+  receiverID: string;
   text: string;
-  timestamp: number;
+  created: number;
 }
