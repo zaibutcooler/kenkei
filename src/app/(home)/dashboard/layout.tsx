@@ -18,8 +18,6 @@ const HomeLayout = async ({ children }: { children: ReactNode }) => {
 
   const friends = await getFriends(session.user.id);
 
-  console.log("friends", friends);
-
   return (
     <div className="flex h-screen">
       <section className="hidden md:flex h-full w-full max-w-[300px] grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
@@ -27,7 +25,7 @@ const HomeLayout = async ({ children }: { children: ReactNode }) => {
 
         <div className="flex-grow font-medium text-sm">
           <section className="mb-4">
-            <DisplayFriends friends={friends} />
+            <DisplayFriends friends={friends} userID={session.user.id} />
           </section>
           <section className="mb-4">
             <p className="text-gray-400 font-medium text-xs mb-1">Friends</p>

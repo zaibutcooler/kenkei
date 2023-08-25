@@ -5,22 +5,28 @@ import { fetcher } from "@/lib/db";
 import { User } from "@/lib/types/db";
 import getUser from "@/lib/utils/getUser";
 import Image from "next/image";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import getMessages from "@/lib/utils/getMessages";
+import { redirect } from "next/navigation";
 
 interface ChatPageProps {
-  params: { id: string };
+  params: { chatID: string };
 }
 
-const dummyMessages = [
-  { text: "Hello!", isSentByMe: true },
-  { text: "Hi there!", isSentByMe: false },
-  { text: "How are you?", isSentByMe: true },
-  // Add more dummy messages here
-];
-
 const ChatPage: React.FC<ChatPageProps> = async ({ params }) => {
-  const { id } = params;
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
 
-  const chatPartner = await getUser(id);
+  const { chatID } = params;
+  const [idOne, idTwo] = chatID?.split("--") || [];
+  console.log("bb", chatID);
+
+  const partnerID = session.user.id === idOne ? idTwo : idOne;
+
+  const chatPartner = await getUser(partnerID);
+
+  const initialMessages = await getMessages(chatID);
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -48,10 +54,10 @@ const ChatPage: React.FC<ChatPageProps> = async ({ params }) => {
       </header>
 
       <section className="h-[68vh]">
-        <Messages messages={dummyMessages} />
+        {initialMessages ? <Messages messages={initialMessages} /> : null}
       </section>
       <section className="h-[20vh]">
-        <MessageInput />
+        <MessageInput chatID={chatID} />
       </section>
     </div>
   );

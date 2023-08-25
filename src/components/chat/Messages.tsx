@@ -1,4 +1,6 @@
 "use client";
+import { Message } from "@/lib/types/types";
+import { useSession } from "next-auth/react";
 import React from "react";
 
 interface MessageProps {
@@ -34,17 +36,18 @@ const Message: React.FC<MessageProps> = ({ text, isSentByMe }) => {
 };
 
 interface MessagesProps {
-  messages: MessageProps[];
+  messages: Message[];
 }
 
 const Messages: React.FC<MessagesProps> = ({ messages }) => {
+  const { data: session } = useSession();
   return (
     <div className="messages-container overflow-y-auto px-0 md:px-2 pb-4 pt-3">
       {messages.map((message, index) => (
         <Message
           key={index}
           text={message.text}
-          isSentByMe={message.isSentByMe}
+          isSentByMe={message.senderId === session?.user.id}
         />
       ))}
     </div>

@@ -1,21 +1,23 @@
 "use client";
 
 import { User } from "@/lib/types/db";
+import getUrl from "@/lib/utils/getUrl";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 
 interface Props {
   friends: User[] | undefined;
+  userID: string;
 }
 
-const DisplayFriends: FC<Props> = ({ friends }) => {
+const DisplayFriends: FC<Props> = ({ friends, userID }) => {
   return (
     <div>
       {friends &&
         friends.map((item) => (
           <Link
-            href={`/dashboard/chat/${item.id}`}
+            href={`/dashboard/chat/${getUrl(item.id, userID)}`}
             key={item.id}
             className="flex gap-4 mb-2 font-medium items-center rounded-md pl-4 py-1.5 hover:bg-green-50">
             <div>

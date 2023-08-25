@@ -1,14 +1,35 @@
 "use client";
 
+import { POST } from "@/app/api/friends/accept/route";
 import React, { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 
-const MessageInput: React.FC = () => {
+interface Props {
+  chatID: string;
+}
+
+const MessageInput: React.FC<Props> = ({ chatID }) => {
+  const [loading, setLoading] = useState(false);
   const [inputText, setInputText] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement your logic to send the message
+
+    try {
+      const postBody = { chatID, text: inputText };
+
+      const response = await fetch("/api/chat/send", {
+        method: "POST",
+        body: JSON.stringify(postBody),
+      });
+
+      if (response.ok) {
+        setInputText("");
+      }
+    } catch (error) {
+      console.log("chat submmit error", error);
+    }
+
     setInputText("");
   };
 
