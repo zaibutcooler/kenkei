@@ -33,7 +33,7 @@ const ChatPage: React.FC<ChatPageProps> = async ({ params }) => {
     <div className="w-full h-full flex flex-col">
       {/* Your Header */}
       <header className="h-[12vh] flex items-center px-4 border-b">
-        <div>
+        <div className="w-[42px] h-[42px] md:w-[48px] md:h-[48px]">
           {chatPartner?.image && (
             <Image
               className="rounded-full"
@@ -45,10 +45,10 @@ const ChatPage: React.FC<ChatPageProps> = async ({ params }) => {
           )}
         </div>
         <div className="ml-4">
-          <h2 className="text-lg font-semibold">
+          <h2 className="text-base md:text-lg font-semibold">
             {chatPartner ? chatPartner.name : ""}
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-xs md:text-sm text-gray-600">
             {chatPartner ? chatPartner.email : ""}
           </p>
         </div>
