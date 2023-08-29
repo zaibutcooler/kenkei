@@ -10,13 +10,14 @@ interface Props {
 }
 
 const FriendRequestCount: FC<Props> = ({ sessionId, initialUnseen }) => {
-  const [unseenRequest, setUnseenRequest] = useState(initialUnseen);
+  const [unseenRequest, setUnseenRequest] = useState(
+    initialUnseen ? initialUnseen : 0
+  );
 
   useEffect(() => {
     pusherClient.subscribe(keyToPusher(`user:${sessionId}:incoming_request`));
 
     const friendRequestHandler = () => {
-      window.alert("new friend request");
       setUnseenRequest(unseenRequest + 1);
     };
     pusherClient.bind(`incoming_request`, friendRequestHandler);

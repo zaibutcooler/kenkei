@@ -1,9 +1,11 @@
 import { authOptions } from "@/lib/auth";
-import { db, fetcher } from "@/lib/db";
+import { fetcher } from "@/lib/db";
 import { User } from "@/lib/types/db";
 import { Message } from "@/lib/types/types";
 import { getServerSession } from "next-auth";
 import { nanoid } from "nanoid";
+import { db } from "@/lib/redis";
+import { keyToPusher, pusherServer } from "@/lib/pusher";
 
 export async function POST(req: Request) {
   try {
@@ -45,6 +47,12 @@ export async function POST(req: Request) {
       text,
       created,
     };
+
+    pusherServer.trigger(
+      keyToPusher(`chat:${chatID}`),
+      "incoming-message",
+      data
+    );
 
     await db.zadd(`chat:${chatID}:messages`, {
       score: created,

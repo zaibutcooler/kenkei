@@ -54,8 +54,14 @@ const ChatPage: React.FC<ChatPageProps> = async ({ params }) => {
         </div>
       </header>
 
-      <section className="h-[68vh]">
-        {initialMessages ? <Messages messages={initialMessages} /> : null}
+      <section className="h-[68vh] container overflow-y-auto">
+        {initialMessages ? (
+          <Messages
+            sessionId={session.user.id}
+            initialMessages={initialMessages}
+            chatID={chatID}
+          />
+        ) : null}
       </section>
       <section className="h-[20vh]">
         <MessageInput chatID={chatID} />

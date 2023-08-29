@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
     await db.sadd(`user:${session.user.id}:friends`, id);
 
-    await db.sadd(`user:${id}:friends`, id);
+    await db.sadd(`user:${id}:friends`, session.user.id);
 
     // await db.srem(``) outbound
 

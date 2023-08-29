@@ -35,7 +35,7 @@ const MessageInput: React.FC<Props> = ({ chatID }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex border-t p-3 gap-4">
+    <form onSubmit={handleSubmit} className="flex border-t p-3 gap-4 bg-white">
       <textarea
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}

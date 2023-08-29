@@ -1,7 +1,8 @@
 "use client";
+import { keyToPusher, pusherClient } from "@/lib/pusher";
 import { Message } from "@/lib/types/types";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface MessageProps {
   text: string;
@@ -36,13 +37,36 @@ const Message: React.FC<MessageProps> = ({ text, isSentByMe }) => {
 };
 
 interface MessagesProps {
-  messages: Message[];
+  initialMessages: Message[];
+  chatID: string;
+  sessionId: string;
 }
 
-const Messages: React.FC<MessagesProps> = ({ messages }) => {
+const Messages: React.FC<MessagesProps> = ({
+  initialMessages,
+  chatID,
+  sessionId,
+}) => {
   const { data: session } = useSession();
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+
+  useEffect(() => {
+    pusherClient.subscribe(keyToPusher(`chat:${chatID}`));
+
+    const messageHandler = (data: Message) => {
+      setMessages((prev) => [data, ...prev]);
+    };
+    pusherClient.bind(`incoming-message`, messageHandler);
+
+    return () => {
+      pusherClient.unsubscribe(keyToPusher(`chat:${chatID}`));
+      pusherClient.unbind(`incoming-message`, messageHandler);
+    };
+  }, []);
+
   return (
-    <div className="messages-container overflow-y-auto px-0 md:px-2 pb-4 pt-3">
+    <div className=" px-0 md:px-2 pb-4 pt-3 flex flex-col-reverse">
+      {" "}
       {messages.map((message, index) => (
         <Message
           key={index}
