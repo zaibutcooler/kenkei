@@ -1,6 +1,7 @@
 import { authOptions } from "@/lib/auth";
-import { db, fetcher } from "@/lib/db";
+import { fetcher } from "@/lib/db";
 import { getServerSession } from "next-auth";
+import { db } from "@/lib/redis";
 
 export async function POST(req: Request) {
   try {

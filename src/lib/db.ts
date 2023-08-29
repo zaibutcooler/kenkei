@@ -1,5 +1,3 @@
-import { Redis } from "@upstash/redis";
-
 const url = process.env.UPSTASH_REDIS_REST_URL;
 const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
@@ -20,8 +18,3 @@ export async function fetcher(command: string, ...args: (number | string)[]) {
   const data = await response.json();
   return data.result;
 }
-
-export const db = new Redis({
-  url: url as string,
-  token: token as string,
-});

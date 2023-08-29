@@ -37,7 +37,10 @@ const RequestPage = async () => {
         <header className="mb-8 text-3xl font-extrabold ">Add Friends</header>
         {incomingFriendRequests ? (
           <section>
-            <FriendRequests items={incomingFriendRequests} />
+            <FriendRequests
+              sessionId={session.user.id}
+              items={incomingFriendRequests}
+            />
           </section>
         ) : (
           <section>No Requests</section>

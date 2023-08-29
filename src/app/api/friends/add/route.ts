@@ -1,6 +1,8 @@
 import { authOptions } from "@/lib/auth";
-import { db, fetcher } from "@/lib/db";
+import { fetcher } from "@/lib/db";
+import { keyToPusher, pusherServer } from "@/lib/pusher";
 import { getServerSession } from "next-auth";
+import { db } from "@/lib/redis";
 
 export async function POST(req: Request) {
   try {
@@ -40,6 +42,15 @@ export async function POST(req: Request) {
     if (isAlreadyFriends) {
       return new Response("Already friends with this user", { status: 400 });
     }
+
+    pusherServer.trigger(
+      keyToPusher(`user:${idToAdd}:incoming_request`),
+      "incoming_request",
+      {
+        senderId: session.user.id,
+        senderEmail: session.user.email,
+      }
+    );
 
     const newItem = await db.sadd(
       `user:${idToAdd}:incoming_request`,

@@ -1,8 +1,9 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
-import { db, fetcher } from "./db";
+import { fetcher } from "./db";
 import { User } from "./types/db";
+import { db } from "./redis";
 
 export const authOptions: NextAuthOptions = {
   adapter: UpstashRedisAdapter(db),
