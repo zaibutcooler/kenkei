@@ -67,13 +67,14 @@ const Messages: React.FC<MessagesProps> = ({
   return (
     <div className=" px-0 md:px-2 pb-4 pt-3 flex flex-col-reverse">
       {" "}
-      {messages.map((message, index) => (
-        <Message
-          key={index}
-          text={message.text}
-          isSentByMe={message.senderID === session?.user.id}
-        />
-      ))}
+      {messages &&
+        messages.map((message, index) => (
+          <Message
+            key={index}
+            text={message.text}
+            isSentByMe={message.senderID === session?.user.id}
+          />
+        ))}
     </div>
   );
 };
