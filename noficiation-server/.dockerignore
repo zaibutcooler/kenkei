@@ -1,0 +1,8 @@
+# Ignore common files and directories in Docker builds
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.log
